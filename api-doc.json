@@ -1,0 +1,392 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "JAGG Store API",
+    "version": "0.1",
+    "title": "JAGG Store Api"
+  },
+  "host": "jagg.konosprod.fr",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "api",
+      "description": "Everything about the api"
+    },
+    {
+      "name": "maps",
+      "description": "Eveything about maps"
+    },
+    {
+      "name": "tags",
+      "description": "Everything about tags"
+    },
+    {
+      "name": "authors",
+      "description": "Operations about authors"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "api"
+        ],
+        "summary": "Get the API current informations",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/maps": {
+      "get": {
+        "tags": [
+          "maps"
+        ],
+        "summary": "Get maps from the store",
+        "description": "Gets map from the store. If no offset send, all maps will be retrieved.",
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Offset in maps pagination",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "orderby",
+            "in": "query",
+            "description": "Map ordered by",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "maps"
+        ],
+        "summary": "Add a new map to the store",
+        "description": "",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "steamid",
+            "in": "formData",
+            "description": "SteamID",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "map",
+            "in": "formData",
+            "description": "Map to upload",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/maps/{mapid}": {
+      "parameters": [
+        {
+          "name": "mapid",
+          "in": "path",
+          "description": "ID of map to download",
+          "required": true,
+          "type": "integer",
+          "format": "int64"
+        }
+      ],
+      "get": {
+        "tags": [
+          "maps"
+        ],
+        "summary": "Download a map from the store",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "maps"
+        ],
+        "summary": "Update a map",
+        "description": "",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "steamid",
+            "in": "formData",
+            "description": "SteamID",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "map",
+            "in": "formData",
+            "description": "Map to upload",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "maps"
+        ],
+        "summary": "Delete a map",
+        "description": "",
+        "parameters": [
+          {
+            "name": "steamid",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/tags": {
+      "get": {
+        "tags": [
+          "tags"
+        ],
+        "summary": "Get tag list",
+        "description": "Gets tag list. If no offset send, all tags will be retrieved. Can be ordered.",
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Offset in maps pagination",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "orderby",
+            "in": "query",
+            "description": "Tags ordered by",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "tags"
+        ],
+        "summary": "Create a new tag",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "tag",
+            "description": "The tag to create.",
+            "schema": {
+              "type": "object",
+              "required": [
+                "steamid",
+                "tag"
+              ],
+              "properties": {
+                "steamid": {
+                  "type": "integer",
+                  "format": "int64"
+                },
+                "tag": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/tags/{tag}": {
+      "parameters": [
+        {
+          "name": "tag",
+          "in": "path",
+          "description": "Tag name",
+          "required": true,
+          "type": "string",
+          "format": "int64"
+        }
+      ],
+      "get": {
+        "tags": [
+          "tags"
+        ],
+        "summary": "Retrieve all maps belonging to {tag}",
+        "description": "Retrieve all maps belonging to a tag. If no offset send, all maps will be retrieved. Maps can be ordered.",
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Offset in map pagination",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "orderby",
+            "in": "query",
+            "description": "Map ordered by",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "tags"
+        ],
+        "summary": "Delete {tag}",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/authors": {
+      "post": {
+        "tags": [
+          "authors"
+        ],
+        "summary": "Create a new author",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "author",
+            "description": "The user to create.",
+            "schema": {
+              "type": "object",
+              "required": [
+                "steamid"
+              ],
+              "properties": {
+                "steamid": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/authors/{steamid}": {
+      "parameters": [
+        {
+          "name": "steamid",
+          "in": "path",
+          "description": "Author steamID",
+          "required": true,
+          "type": "integer",
+          "format": "int64"
+        }
+      ],
+      "get": {
+        "tags": [
+          "authors"
+        ],
+        "summary": "Get maps from author",
+        "description": "Get maps from author. If no offset send, all map will be retrieved. Maps can be ordered.",
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Offset in map pagination",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "orderby",
+            "in": "query",
+            "description": "Map ordered by",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    }
+  }
+}
