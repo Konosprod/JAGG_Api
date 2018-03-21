@@ -1,6 +1,6 @@
 <?php
 return [
-  'determineRouteBeforeAppMiddleware' => false,
+  'determineRouteBeforeAppMiddleware' => true,
   'outputBuffering' => false,
   'displayErrorDetails' => true,
   'db' => [

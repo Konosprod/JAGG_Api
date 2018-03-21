@@ -8,8 +8,11 @@ class ComposerStaticInitfabe11fee9bb0ff7d05b086795fd6cfb
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        '72579e7bd17821bb1321b87411366eae' => __DIR__ . '/..' . '/illuminate/support/helpers.php',
         '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
+        '72579e7bd17821bb1321b87411366eae' => __DIR__ . '/..' . '/illuminate/support/helpers.php',
+        'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
+        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -17,6 +20,7 @@ class ComposerStaticInitfabe11fee9bb0ff7d05b086795fd6cfb
         array (
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Component\\Translation\\' => 30,
+            'Steam\\' => 6,
             'Slim\\' => 5,
         ),
         'P' => 
@@ -38,6 +42,12 @@ class ComposerStaticInitfabe11fee9bb0ff7d05b086795fd6cfb
             'Illuminate\\Database\\' => 20,
             'Illuminate\\Contracts\\' => 21,
             'Illuminate\\Container\\' => 21,
+        ),
+        'G' => 
+        array (
+            'GuzzleHttp\\Psr7\\' => 16,
+            'GuzzleHttp\\Promise\\' => 19,
+            'GuzzleHttp\\' => 11,
         ),
         'F' => 
         array (
@@ -61,6 +71,10 @@ class ComposerStaticInitfabe11fee9bb0ff7d05b086795fd6cfb
         'Symfony\\Component\\Translation\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/translation',
+        ),
+        'Steam\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/da-mitchell/steam-api/src/Steam',
         ),
         'Slim\\' => 
         array (
@@ -110,6 +124,18 @@ class ComposerStaticInitfabe11fee9bb0ff7d05b086795fd6cfb
         array (
             0 => __DIR__ . '/..' . '/illuminate/container',
         ),
+        'GuzzleHttp\\Psr7\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
+        ),
+        'GuzzleHttp\\Promise\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
+        ),
+        'GuzzleHttp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
+        ),
         'FastRoute\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/fast-route/src',
@@ -122,6 +148,10 @@ class ComposerStaticInitfabe11fee9bb0ff7d05b086795fd6cfb
         array (
             0 => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon',
         ),
+    );
+
+    public static $fallbackDirsPsr4 = array (
+        0 => __DIR__ . '/..' . '/bryanjhv/slim-session/src',
     );
 
     public static $prefixesPsr0 = array (
@@ -139,6 +169,7 @@ class ComposerStaticInitfabe11fee9bb0ff7d05b086795fd6cfb
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitfabe11fee9bb0ff7d05b086795fd6cfb::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitfabe11fee9bb0ff7d05b086795fd6cfb::$prefixDirsPsr4;
+            $loader->fallbackDirsPsr4 = ComposerStaticInitfabe11fee9bb0ff7d05b086795fd6cfb::$fallbackDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInitfabe11fee9bb0ff7d05b086795fd6cfb::$prefixesPsr0;
 
         }, null, ClassLoader::class);

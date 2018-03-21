@@ -1,5 +1,5 @@
 {
-  "swagger": "2.0",
+  "swagger": "3.0",
   "info": {
     "description": "JAGG Store API",
     "version": "0.1",
@@ -85,9 +85,24 @@
         "summary": "Add a new map to the store",
         "description": "",
         "consumes": [
-          "multipart/form-data"
+          "multipart/form-data",
         ],
         "parameters": [
+          {
+            "in": "formData",
+            "name": "tag",
+            "description": "Map tags",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "tag": {
+                  "type": "string"
+                }
+              }
+            }
+          },
           {
             "name": "steamid",
             "in": "formData",
@@ -95,6 +110,20 @@
             "required": true,
             "type": "integer",
             "format": "int64"
+          },
+          {
+            "name": "name",
+            "in": "formData",
+            "description": "author's name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "thumb",
+            "in" : "formData",
+            "description": "thumbnail",
+            "required": false,
+            "type": "file"
           },
           {
             "name": "map",
