@@ -101,6 +101,8 @@ class MapController {
         	$map = new Map();
 
 		$files = $request->getUploadedFiles();
+		//$this->container["logger"]->addInfo(json_encode(explode(",", $data["tag"])));
+
 
 		if(!empty($files["map"]) && !empty($files["thumb"])) {
 			if($files["map"]->getError() === 0 && $files["thumb"]->getError() === 0) {
@@ -132,7 +134,9 @@ class MapController {
 				$thumbPath = $this->container->get("thumbs_directory").$map->id.".png";
 				$files["thumb"]->moveTo($thumbPath);
 
-				foreach($data["tags"] as $createTag) {
+				$tags = explode(",", $data["tags"]);
+
+				foreach($tags as $createTag) {
 
 					$this->container->get("logger")->addInfo($createTag);
 
@@ -140,10 +144,12 @@ class MapController {
 
 					if(is_null($tag)) {
 						$newTag = new Tag();
-						$newTag->tag = createTag;
-						$newTag->attach($map->id);
+						$newTag->tag = $createTag;
+						$newTag->maps()->attach($map->id);
 						$newTag->save();
 
+						$map->tags()->attach($newTag->id);
+						$newTag->save();
 						$map->save();
 
 					} else {
@@ -181,6 +187,27 @@ class MapController {
 				if($files["map"]->getError() === 0) {
 					$path = $this->container->get("uplload_directory").$map->id."_".$files["map"]->getClientFilename();
 					$files["map"]->moveTo($path);
+
+	                                foreach(explode(",", $data["tags"]) as $createTag) {
+
+        	                                $this->container->get("logger")->addInfo($createTag);
+
+                	                        $tag = Tag::where("tag", $createTag)->first();
+
+                        	                if(is_null($tag)) {
+                                	                $newTag = new Tag();
+                                        	        $newTag->tag = createTag;
+                                                	$newTag->attach($map->id);
+                                                	$newTag->save();
+
+                                                	$map->save();
+
+                                        	} else {
+                                                	$map->tags()->attach($tag->id);
+                                                	$map->save();
+                                                	$tag->save();
+                                        	}
+                                	}
 
 					$map->save();
 
