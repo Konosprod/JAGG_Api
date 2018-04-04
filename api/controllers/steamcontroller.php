@@ -54,7 +54,7 @@ class SteamController {
 		} else {
 			$this->container["session"]->auth = false;
 			return $response->withStatus(403)
-					->write(array("auth"=> false));
+					->withJson(array("auth"=> false));
 		}
 	}
 

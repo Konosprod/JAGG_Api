@@ -5,7 +5,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 use \Interop\Container\ContainerInterface as ContainerInterface;
 
 class AuthenticationMiddleware {
-	private $DEBUG = false;
+	private $DEBUG = true;
 	protected $container;
 	private $freeRoutes = array("isAuth", "auth");
 
