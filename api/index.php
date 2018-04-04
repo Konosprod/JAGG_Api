@@ -29,10 +29,6 @@ $container["logger"] = function($c) {
 	return $logger;
 };
 
-$container["session"] = function($c) {
-	return new \SlimSession\Helper;
-};
-
 $capsule = new Illuminate\Database\Capsule\Manager;
 $capsule->addConnection($container["settings"]["db"]);
 $capsule->setAsGlobal();
@@ -74,6 +70,10 @@ $app->get("/authors/{name}", AuthorController::class.":getAuthor");
 
 
 $app->add(new AuthenticationMiddleware($container));
+
+$container["session"] = function($c) {
+        return new \SlimSession\Helper;
+};
 
 $app->add(new \Slim\Middleware\Session([
         "name"=>"session",

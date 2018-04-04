@@ -29,7 +29,8 @@ class SteamController {
 	}
 
 	public function isAuth($request, $response, $args) {
-		if($this->container["session"]["auth"]) {
+
+		if($this->container["session"]->auth) {
 			return $response->withStatus(200)
 					->withJson(array("auth"=>true));
 		} else {
@@ -43,17 +44,15 @@ class SteamController {
 		$steamid = $data["steamid"];
 		$ticket = $data["ticket"];
 
-		$this->container->get("session");
-
 		$result = $this->steam->run(new \Steam\Command\UserAuth\AuthenticateUserTicket($this->APP_ID, $ticket));
 
 		$steamres = (array) $result["response"]["params"];
 
 		if($steamres["steamid"] == $steamid) {
-			$this->container["session"]["auth"] = true;
+			$this->container["session"]->auth = true;
 			return $response->withJson(array("auth" => true));
 		} else {
-			$this->container["session"]["auth"] = false;
+			$this->container["session"]->auth = false;
 			return $response->withStatus(403)
 					->write(array("auth"=> false));
 		}

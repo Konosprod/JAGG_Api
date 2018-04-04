@@ -5,7 +5,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 use \Interop\Container\ContainerInterface as ContainerInterface;
 
 class AuthenticationMiddleware {
-	private $DEBUG = true;
+	private $DEBUG = false;
 	protected $container;
 	private $freeRoutes = array("isAuth", "auth");
 
@@ -22,13 +22,7 @@ class AuthenticationMiddleware {
 			if(in_array($route->getName(), $this->freeRoutes)) {
 				return $next($request, $response);
 			} else {
-
-				$headers = $request->getHeaders();
-				foreach ($headers as $name => $values) {
-					$this->container["logger"]->addInfo($name . ": " . implode(", ", $values));
-				}
-
-				if($this->container["session"]["auth"]) {
+				if($this->container["session"]->auth == true) {
 					return $next($request, $response);
 				} else {
                         		return $response->withStatus(403)
