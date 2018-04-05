@@ -53,7 +53,7 @@ $app->post("/maps", MapController::class.":createMap");
 $app->get("/maps/search/{terms}", MapController::class.":searchMap");
 
 $app->get("/maps/{mapid}", MapController::class.":getMap");
-$app->put("/maps/{mapid}", MapController::class.":updateMap");
+$app->post("/maps/{mapid}", MapController::class.":updateMap");
 $app->delete("/maps/{mapid}", MapController::class.":deleteMap");
 
 $app->get("/maps/{mapid}/download", MapController::class.":downloadMap");

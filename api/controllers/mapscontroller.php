@@ -161,7 +161,7 @@ class MapController {
 
 				return $response->withStatus(200)
 						->withHeader("Content-Type", "application/json")
-						->write($map->toJson());
+						->write(Map::Find($map->id)->toJson());
 			}
 		} else {
 			return $response->withStatus(400)
@@ -185,21 +185,25 @@ class MapController {
 
 			if(!empty($files["map"])) {
 				if($files["map"]->getError() === 0) {
-					$path = $this->container->get("uplload_directory").$map->id."_".$files["map"]->getClientFilename();
+					$path = $this->container->get("upload_directory").$map->id."_".$files["map"]->getClientFilename();
 					$files["map"]->moveTo($path);
 
-	                                foreach(explode(",", $data["tags"]) as $createTag) {
+                                	$tags = explode(",", $data["tags"]);
 
-        	                                $this->container->get("logger")->addInfo($createTag);
+                                	foreach($tags as $createTag) {
 
-                	                        $tag = Tag::where("tag", $createTag)->first();
+                                        	$this->container->get("logger")->addInfo($createTag);
 
-                        	                if(is_null($tag)) {
-                                	                $newTag = new Tag();
-                                        	        $newTag->tag = createTag;
-                                                	$newTag->attach($map->id);
+                                        	$tag = Tag::where("tag", $createTag)->first();
+
+                                        	if(is_null($tag)) {
+                                                	$newTag = new Tag();
+                                                	$newTag->tag = $createTag;
+                                                	$newTag->maps()->attach($map->id);
                                                 	$newTag->save();
 
+                                                	$map->tags()->attach($newTag->id);
+                                                	$newTag->save();
                                                 	$map->save();
 
                                         	} else {
@@ -211,9 +215,14 @@ class MapController {
 
 					$map->save();
 
+					if(!empty($files["thumb"])) {
+						$thumbPath = $this->container->get("thumbs_directory").$map->id.".png";
+						$files["thumb"]->moveTo($thumbPath);
+					}
+
 					return $response->withStatus(200)
 							->withHeader("Content-Type", "application/json")
-							->write($map->toJson());
+							->write(Map::Find($map->id)->toJson());
 				}
 			}
 
