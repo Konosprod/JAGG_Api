@@ -101,7 +101,7 @@ class MapController {
         	$map = new Map();
 
 		$files = $request->getUploadedFiles();
-		//$this->container["logger"]->addInfo(json_encode(explode(",", $data["tag"])));
+		$this->container["logger"]->addInfo(json_encode(explode(",", $data["tags"])));
 
 
 		if(!empty($files["map"]) && !empty($files["thumb"])) {
@@ -134,7 +134,7 @@ class MapController {
 				$thumbPath = $this->container->get("thumbs_directory").$map->id.".png";
 				$files["thumb"]->moveTo($thumbPath);
 
-				$tags = explode(",", $data["tags"]);
+				$tags = array_filter(explode(",", $data["tags"]));
 
 				foreach($tags as $createTag) {
 
@@ -144,7 +144,7 @@ class MapController {
 
 					if(is_null($tag)) {
 						$newTag = new Tag();
-						$newTag->tag = $createTag;
+						$newTag->tag = trimp($createTag);
 						$newTag->maps()->attach($map->id);
 						$newTag->save();
 
@@ -188,7 +188,7 @@ class MapController {
 					$path = $this->container->get("upload_directory").$map->id."_".$files["map"]->getClientFilename();
 					$files["map"]->moveTo($path);
 
-                                	$tags = explode(",", $data["tags"]);
+                                	$tags = array_filter(explode(",", $data["tags"]));
 
                                 	foreach($tags as $createTag) {
 
@@ -198,7 +198,7 @@ class MapController {
 
                                         	if(is_null($tag)) {
                                                 	$newTag = new Tag();
-                                                	$newTag->tag = $createTag;
+                                                	$newTag->tag = trim($createTag);
                                                 	$newTag->maps()->attach($map->id);
                                                 	$newTag->save();
 
