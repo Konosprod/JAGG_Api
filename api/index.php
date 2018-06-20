@@ -20,7 +20,7 @@ $container = $app->getContainer();
 
 $container["upload_directory"] = __DIR__."/../maps/";
 $container["thumbs_directory"] = __DIR__."/../thumbs/";
-$container["download_base_url"] = "https://jagg.konosprod.fr/maps/";
+$container["download_base_url"] = "https://jagg-api.konosprod.fr/maps/";
 
 $container["logger"] = function($c) {
 	$logger = new \Monolog\Logger("jagg_api");
