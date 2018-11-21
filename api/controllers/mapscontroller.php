@@ -144,7 +144,7 @@ class MapController {
 
 					if(is_null($tag)) {
 						$newTag = new Tag();
-						$newTag->tag = trimp($createTag);
+						$newTag->tag = trim($createTag);
 						$newTag->maps()->attach($map->id);
 						$newTag->save();
 
