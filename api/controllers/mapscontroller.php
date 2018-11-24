@@ -3,6 +3,7 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use \Interop\Container\ContainerInterface as ContainerInterface;
+use \Illuminate\Support\Carbon as Carbon;
 
 class MapController {
 
@@ -124,6 +125,7 @@ class MapController {
 					$map->author_id = $author->id;
 
 				$map->save();
+				$this->container->get("logger")->addInfo("Map ".$map->id." created at ".$map->created_at->timestamp);
 
 				$path = $this->container->get("upload_directory").$map->id."_".$filename;
 				$files["map"]->moveTo($path);
@@ -152,12 +154,17 @@ class MapController {
 						$newTag->save();
 						$map->save();
 
+						$this->container->get("logger")->addInfo("Tag \"".$newTag->tag."\" created");
+
 					} else {
 						$map->tags()->attach($tag->id);
 						$map->save();
 						$tag->save();
 					}
 				}
+
+				$map->last_update = Carbon::now('UTC');
+				$map->save();
 
 				return $response->withStatus(200)
 						->withHeader("Content-Type", "application/json")
@@ -188,6 +195,8 @@ class MapController {
 					$path = $this->container->get("upload_directory").$map->id."_".$files["map"]->getClientFilename();
 					$files["map"]->moveTo($path);
 
+
+					$this->container->get("logger")->addInfo($map->created_at->timestamp);
                                 	$tags = array_filter(explode(",", $data["tags"]));
 
                                 	foreach($tags as $createTag) {
@@ -206,6 +215,8 @@ class MapController {
                                                 	$newTag->save();
                                                 	$map->save();
 
+							$this->container->get("logger")->addInfo("Tag \"".$newTag->tag."\" created");
+
                                         	} else {
                                                 	$map->tags()->attach($tag->id);
                                                 	$map->save();
@@ -213,11 +224,18 @@ class MapController {
                                         	}
                                 	}
 
+					$map->last_update = Carbon::now('UTC');
+
+					$map->touch();
 					$map->save();
+
+					$this->container->get("logger")->addInfo("Map ".$map->id." updated at ".$map->last_update->timestamp);
 
 					if(!empty($files["thumb"])) {
 						$thumbPath = $this->container->get("thumbs_directory").$map->id.".png";
 						$files["thumb"]->moveTo($thumbPath);
+					} else {
+						$this->container->get("logger")->addInfo("No thumbs");
 					}
 
 					return $response->withStatus(200)
