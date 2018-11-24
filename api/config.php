@@ -3,6 +3,7 @@ return [
   'determineRouteBeforeAppMiddleware' => true,
   'outputBuffering' => false,
   'displayErrorDetails' => true,
+  'timezone' => 'UTC',
   'db' => [
     'driver' => 'mysql',
     'host' => 'localhost',
