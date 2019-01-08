@@ -102,7 +102,7 @@ class MapController {
         	$map = new Map();
 
 		$files = $request->getUploadedFiles();
-		$this->container["logger"]->addInfo(json_encode(explode(",", $data["tags"])));
+		$this->container["logger"]->addInfo("Tags : ".json_encode(explode(",", $data["tags"])));
 
 
 		if(!empty($files["map"]) && !empty($files["thumb"])) {
@@ -287,6 +287,14 @@ class MapController {
                         $offset = $queries["offset"];
                 }
 
+                if(isset($queries["steamid"])) {
+                        $steamid = $queries["steamid"];
+                        $author = Author::where("steamid", $steamid)->first();
+
+                        return $response->withStatus(200)
+                                        ->withHeader("Content-Type", "application/json")
+                                        ->write(Map::where("author_id", $author->id)->orderBy("id", "DESC")->offset($offset)->take(15)->get()->toJson());
+                }
 
 		return $response->withStatus(200)
 				->withHeader("Content-Type", "application/json")

@@ -49,7 +49,7 @@ class TagController {
 	*/
 	public function createTag($request, $response, $args) {
 		$data = $request->getParsedBody();
-		//$this->container->get("logger")->addInfo(var_export($data, true));
+		$this->container->get("logger")->addInfo("Tag created : ".var_export($data, true));
 		$tag = Tag::where("tag", $data["tag"])->first();
 
 		if(is_null($tag)) {
@@ -60,6 +60,51 @@ class TagController {
 			return $response->withStatus(200)
 					->withJson(array("message"=>"Already exist"));
 		}
+	}
+
+	/**
+	* Add tag to a map
+	* @route /tags/{tag}/{mapid}
+	*/
+	public function addTag($request, $response, $args) {
+		$data = $request->getParsedBody();
+		$tag = Tag::where("tag", $args["tag"])->first();
+
+		if(is_null($tag)) {
+			$tag = new Tag();
+			$tag->tag = trim($args["tag"]);
+		}
+
+		$map = Map::find($args["mapid"]);
+		$tag->maps()->attach($map->id);
+		$tag->save();
+
+
+		$map->tags()->attach($tag->id);
+		$tag->save();
+		$map->save();
+
+		return $response->withStatus(200)
+				->withJson(array("message"=>"added"));
+	}
+
+	/**
+	* Remove tag from map
+	* @route /tags/{tag}/{mapid}
+	*/
+	public function detachTag($request, $response, $args) {
+		$tag = Tag::where("tag", $args["tag"])->first();
+		$map = Map::find($args["mapid"]);
+
+		$tag->maps()->detach($map->id);
+		$map->tags()->detach($tag->id);
+
+		$tag->save();
+		$map->save();
+
+		return $response->withStatus(200)
+				->withJson(array("message"=>"detached"));
+
 	}
 
 	/**

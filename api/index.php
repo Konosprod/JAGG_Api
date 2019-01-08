@@ -64,6 +64,9 @@ $app->post("/tags", TagController::class.":createTag");
 $app->get("/tags/{tag}", TagController::class.":getTag");
 $app->delete("/tags/{tagid}", TagController::class.":deleteTag");
 
+$app->post("/tags/{tag}/{mapid}", TagController::class.":addTag");
+$app->delete("/tags/{tag}/{mapid}", TagController::class.":detachTag");
+
 $app->post("/authors", AuthorController::class.":createAuthor");
 
 $app->get("/authors/{name}", AuthorController::class.":getAuthor");
