@@ -265,6 +265,8 @@ class MapController {
 			$filename = str_replace($this->container->get("download_base_url"), "", $map->path);
 			$path = $this->container->get("upload_directory").$filename;
 
+			 $this->container->get("logger")->addInfo("Mapid : ".$args["mapid"]." deleted !");
+
 			unlink($path);
 
 			$map->delete();
